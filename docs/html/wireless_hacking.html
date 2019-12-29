@@ -81,7 +81,11 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Wireless hacking</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Wireless hacking</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#set-wireless-interface-to-monitor-mode">Set wireless interface to Monitor mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#capture-packets-in-the-air">Capture packets in the air</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -148,6 +152,68 @@
             
   <div class="section" id="wireless-hacking">
 <span id="id1"></span><h1>Wireless hacking<a class="headerlink" href="#wireless-hacking" title="Permalink to this headline">¶</a></h1>
+<p>All of the commands in this section needs root privileges.</p>
+<div class="section" id="set-wireless-interface-to-monitor-mode">
+<span id="wireless-hacking-switch-wireless-to-monitor-mode"></span><h2>Set wireless interface to Monitor mode<a class="headerlink" href="#set-wireless-interface-to-monitor-mode" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Get to know the wireless interface name and basic properties:</p>
+</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">iw</span> <span class="n">dev</span>
+</pre></div>
+</div>
+<p>Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phy</span><span class="c1">#0</span>
+    <span class="n">Interface</span> <span class="n">wlp6s0</span>
+        <span class="n">ifindex</span> <span class="mi">3</span>
+        <span class="n">wdev</span> <span class="mh">0x1</span>
+        <span class="n">addr</span> <span class="n">XX</span><span class="p">:</span><span class="n">XX</span><span class="p">:</span><span class="n">XX</span><span class="p">:</span><span class="n">XX</span><span class="p">:</span><span class="n">XX</span><span class="p">:</span><span class="n">XX</span>
+        <span class="n">ssid</span> <span class="n">wifi</span><span class="o">-</span><span class="n">name</span>
+        <span class="nb">type</span> <span class="n">managed</span>
+        <span class="n">channel</span> <span class="mi">7</span> <span class="p">(</span><span class="mi">2442</span> <span class="n">MHz</span><span class="p">),</span> <span class="n">width</span><span class="p">:</span> <span class="mi">20</span> <span class="n">MHz</span><span class="p">,</span> <span class="n">center1</span><span class="p">:</span> <span class="mi">2442</span> <span class="n">MHz</span>
+        <span class="n">txpower</span> <span class="mf">15.00</span> <span class="n">dBm</span>
+</pre></div>
+</div>
+<p>To set wireless interface to Monitor mode with iw you can use the following command sequence:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">IFACE</span> <span class="n">down</span>
+<span class="n">iw</span> <span class="n">IFACE</span> <span class="nb">set</span> <span class="n">monitor</span> <span class="n">control</span>
+<span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">IFACE</span> <span class="n">up</span>
+</pre></div>
+</div>
+<p>To change back to managed mode. Run following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">IFACE</span> <span class="n">down</span>
+<span class="n">iw</span> <span class="n">IFACE</span> <span class="nb">set</span> <span class="nb">type</span> <span class="n">managed</span>
+<span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">IFACE</span> <span class="n">up</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Where IFACE replace with actual name of your wireless interface. From output of iw dev, we would use <strong>wlp6s0</strong>.</p>
+</div>
+<p>Alternatively we can change the mode with <a class="reference external" href="https://www.aircrack-ng.org/doku.php?id=airmon-ng">airmon-ng</a> tool.</p>
+<p>Before putting a card into monitor mode, check for interfering processes, by running the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">airmon</span><span class="o">-</span><span class="n">ng</span> <span class="n">check</span>
+</pre></div>
+</div>
+<p>This command stops network managers then kill interfering processes left:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">airmon</span><span class="o">-</span><span class="n">ng</span> <span class="n">check</span> <span class="n">kill</span>
+</pre></div>
+</div>
+<p>Make sure to verify the processes again, since systemd might start something we have just killed. Once the list is empty, start monitor mode:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">airmon</span><span class="o">-</span><span class="n">ng</span> <span class="n">start</span> <span class="n">IFACE</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Where IFACE replace with actual name of your wireless interface. From output of iw dev, we would use <strong>wlp6s0</strong>. Airmon-ng will create a monitor mode interface called <strong>wlp6s0mon</strong>.</p>
+</div>
+</div>
+<div class="section" id="capture-packets-in-the-air">
+<h2>Capture packets in the air<a class="headerlink" href="#capture-packets-in-the-air" title="Permalink to this headline">¶</a></h2>
+<p>To capture <a class="reference external" href="https://ricco386.github.io/CYBER501x-Cybersecurity-Fundamentals/html/Unit_4.html#unit4-packets-routing" title="(in RITx: CYBER501x Cybersecurity Fundamentals - Personal study notes)"><span class="xref std std-ref">packets</span></a> in the air we use <a class="reference external" href="https://www.aircrack-ng.org/doku.php?id=airodump-ng">Airodump-ng</a>. To see all accessible routers just run command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">airodump</span><span class="o">-</span><span class="n">ng</span> <span class="n">wlp6s0mon</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
