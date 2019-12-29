@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Penetration testing - Personal study notes's!
+Welcome to Penetration testing - Personal study notes!
 ========================================================
 
 This are my personal notes taken during the path into security.
@@ -19,6 +19,8 @@ Notes are written in `Sphinx <https://www.sphinx-doc.org/en/master/>`_ documenta
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+
+   wireless_hacking
 
 Other personal notes from `RITx Cybersecurity MicroMasters® Program <https://www.edx.org/micromasters/ritx-cybersecurity>`_ courses:
 
