@@ -26,6 +26,7 @@ Other personal notes from `RITx Cybersecurity MicroMasters® Program <https://ww
 
 * `CYBER501x Cybersecurity Fundamentals notes <https://ricco386.github.io/CYBER501x-Cybersecurity-Fundamentals/>`_
 * `CYBER502x Computer Forensics <https://ricco386.github.io/CYBER502x-Computer-Forensics/>`_
+* `CYBER503x Cybersecurity Risk Management <https://ricco386.github.io/CYBER503x-Cybersecurity-Risk-Management/>`_
 
 
 Indices and tables
